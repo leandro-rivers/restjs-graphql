@@ -133,6 +133,9 @@ export class InsertTestData1753305205584 implements MigrationInterface {
                 INSERT INTO "post_tags_tag" ("postId", "tagId") VALUES ($1, $2)
             `, [postId, tagId]);
         }
+
+        // Update the sequence for the user table to start from the next available ID
+        await queryRunner.query(`SELECT setval('user_id_seq', (SELECT MAX(id) FROM "user"))`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
